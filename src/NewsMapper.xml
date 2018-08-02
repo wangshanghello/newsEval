@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace就是与此文件对应的Dao接口的全路径 -->
+<mapper namespace="com.news.dao.NewsDao">
+
+	<!-- 查询新闻栏目 -->
+	<select id="findnewslm" resultType="Newsclass">
+		select * from tb_newsclass
+	</select>
+	<!-- 登录 -->
+	<select id="login" resultType="Integer" parameterType="User">
+
+		select
+		count(*) from tb_User where username = #{username} and password =
+		#{password}
+	</select>
+	<select id="findnewsfl" resultType="map">
+
+		SELECT k.content as
+		flcontent,c.content as lmcontent from tb_newskind k
+		INNER JOIN
+		tb_newsclass c
+		on c.classId = k.classId
+	</select>
+	<select id="userInfo" resultType="User">
+		select * from tb_user
+	</select>
+
+	<select id="newsInfo" resultType="News">
+		select * from tb_news order by newsTime desc
+	</select>
+
+	<select id="newsInfos" resultType="News">
+		select * from tb_news order by
+		newsId desc limit 0,2
+	</select>
+	<insert id="addnews" parameterType="News">
+		insert into
+		tb_news(headTitle,myOther,content,author,edior,newsFrom,newsTime)
+		values(#{headTitle},#{myOther},#{content},#{author},#{edior},#{newsFrom},#{newsTime})
+	</insert>
+	<select id="findNewsInfo" resultType="News" parameterType="News">
+		select * from tb_news where newsId = #{newsId}
+	</select>
+	<delete id="deleteNews" parameterType="Integer">
+		delete from tb_news where
+		newsId = #{newsId}
+	</delete>
+	<select id="updateIdNews" parameterType="News" resultType="News">
+		select * from tb_news where newsId=#{newsId}
+	</select>
+	<update id="updateNews" parameterType="News">
+		update tb_news set
+		headTitle=#{headTitle},myOther=#{myOther},content=#{content}
+		,author=#{author},edior=#{edior},newsFrom=#{newsFrom} where
+		newsId=#{newsId}
+	</update>
+	<insert id="addUser" parameterType="User">
+	insert into tb_user(username,password,state) values(#{username},#{password},#{state})
+	</insert>
+	<select id="findUserState" parameterType="String" resultType="Integer">
+		select state from tb_user where username = #{username}
+	</select>
+	<delete id="deletenewslm" parameterType="Integer">
+		delete from tb_newsclass where classId=#{classId}
+	</delete>
+	<select id="updateIdnewslm" parameterType="Integer" resultType="Newsclass">
+		select * from tb_newsclass where classId=#{classId}
+	</select>
+	<update id="updatenewslm">
+		update tb_newsclass set content=#{content} where classId=#{classId}
+	</update>
+	<insert id="addnewslm">
+		insert into tb_newsclass(content) values(#{content})
+	</insert>
+</mapper>
